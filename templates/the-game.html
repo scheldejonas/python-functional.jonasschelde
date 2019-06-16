@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <form action="{{ url_for('play') }}" method="POST" class="wrap no-top">
+
+        <div class="grid-100 row">
+
+            <div class="grid-100 text-center">
+
+                <h1>Choose your opponent and get smarter with simulated choices</h1>
+
+             </div>
+
+        </div>
+
+        <div class="grid-100 row">
+
+            <div class="grid-20">
+
+                <div class="title">
+
+                    <input type="text" name="name" value="{{ saves.get('name', '') }}">
+
+                </div>
+
+            </div>
+
+            <div class="grid-20">
+
+                <div class="">
+
+                    <label>Rounds</label>
+
+                    <input type="number"
+                           name="round_count"
+                           value="{{ saves.get('round_count', 1000) }}"
+                           placeholder="Rounds" >
+
+                </div>
+
+            </div>
+
+            <div class="grid-60">
+
+                <div class="colors">
+
+                    {% for color in options['colors'] %}
+
+                        <input type="radio" id="{{ color }}" name="colors" value="{{ color }}"
+
+                               {% if saves.get('color') == color %}checked{% endif %}>
+
+                        <label for="{{ color }}"></label>
+
+                    {% endfor %}
+
+                    <button class="btn">Play</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="bear" class="grid-100 bg-{{ saves.get('colors') }}">
+
+            {% if result %}
+            <h2>If {{ result['first_color'] }} is the opponent, biggest looser is {{ result['chose_opponent'] }}</h2><br>
+            <br>
+            <h3>Playing {{ result['first_color'] }} vs {{ result['second_color'] }}</h3><br>
+            <p>Resultet in {{ result['first_dice_vs_second_dice']['dice_one']  }} vs {{ result['first_dice_vs_second_dice']['dice_two'] }}</p><br>
+            <br>
+            <h3>Playing {{ result['first_color'] }} vs {{ result['third_color'] }}</h3><br>
+            <p>Resultet in {{ result['first_dice_vs_third_dice']['dice_one'] }} vs {{ result['first_dice_vs_third_dice']['dice_two'] }}</p><br>
+            {% endif %}
+
+        </div>
+
+    </form>
+
+{% endblock %}
